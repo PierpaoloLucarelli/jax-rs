@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Submit New City Information</title>
+	</head>
+	<body>
+		<header>
+			<h1>Submit a New City</h1>
+		</header>
+		<section>
+			<form method="post" action="api/city">
+				<table>
+					<tr>
+						<td>City/Place Code:</td>
+						<td>
+							<input name="code" type="text">
+						</td>
+					</tr>
+					<tr>
+						<td>City/Place Name:</td>
+						<td>
+							<input name="name" type="text">
+						</td>
+					</tr>
+					<tr>
+						<td>Latitude:</td>
+						<td>
+							<input name="lat" type="text">
+						</td>
+					</tr>
+					<tr>
+						<td>Longitude:</td>
+						<td>
+							<input name="long" type="text">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<button type="submit">Submit City/Place</button>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</section>
+	</body>
+</html>
