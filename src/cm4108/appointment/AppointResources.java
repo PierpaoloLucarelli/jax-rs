@@ -38,5 +38,12 @@ public class AppointResources {
 		}
 	}
 	
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response dummyGet()
+	{
+	return Response.status(200).entity("Congratulations! Jersey is working!").build();
+	} //end method
+	
 	
 }
