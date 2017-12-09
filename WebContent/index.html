@@ -1,42 +1,42 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Submit New City Information</title>
+		<title>Submit New Appointment</title>
 	</head>
 	<body>
 		<header>
-			<h1>Submit a New City</h1>
+			<h1>Submit a New Appointment</h1>
 		</header>
 		<section>
-			<form method="post" action="api/city">
+			<form method="post" action="/city">
 				<table>
 					<tr>
-						<td>City/Place Code:</td>
+						<td>date Time</td>
 						<td>
-							<input name="code" type="text">
+							<input type="date" name="dateTime">
 						</td>
 					</tr>
 					<tr>
-						<td>City/Place Name:</td>
+						<td>duration</td>
 						<td>
-							<input name="name" type="text">
+							<input type="number" name="duration" min="1" max="200">
 						</td>
 					</tr>
 					<tr>
-						<td>Latitude:</td>
+						<td>owner:</td>
 						<td>
-							<input name="lat" type="text">
+							<input name="owner" type="text">
 						</td>
 					</tr>
 					<tr>
-						<td>Longitude:</td>
+						<td>description:</td>
 						<td>
-							<input name="long" type="text">
+							<input name="description" type="text">
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<button type="submit">Submit City/Place</button>
+							<button type="submit">Submit Appointment</button>
 						</td>
 					</tr>
 				</table>

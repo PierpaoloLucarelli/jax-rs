@@ -1,6 +1,7 @@
 package cm4108.appointment;
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -15,13 +16,13 @@ public class AppointResources {
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response addAppintment(
-			@FormParam("id") String id,
 			@FormParam("dateTime") Date dateTime,
 			@FormParam("duration") int duration,
 			@FormParam("owner") String owner,
 			@FormParam("description") String description
 			) {
 		try {
+			String id = UUID.randomUUID().toString();
 			Appointment appointment = new Appointment(id,dateTime,duration,owner,description );
 			DynamoDBMapper mapper=DynamoDBUtil.getMapper(null);
 			mapper.save(appointment);
