@@ -1,14 +1,23 @@
 package cm4108.appointment;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
+
+//general Java
+import java.util.*;
+//JAX-RS
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
+import com.amazonaws.regions.Regions;
+//AWS SDK
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 
+import cm4108.Config;
 import cm4108.aws.DynamoDBUtil;
+import cm4108.exceptions.AppointmentNotFoundException;
 
 @Path("/appointment")
 public class AppointResources {
@@ -16,19 +25,18 @@ public class AppointResources {
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response addAppintment(
-			@FormParam("dateTime") Date dateTime,
-			@FormParam("duration") int duration,
+			@FormParam("dateTime") String dateTime,
+			@FormParam("duration") String duration,
 			@FormParam("owner") String owner,
 			@FormParam("description") String description
 			) {
 		try {
-			String id = UUID.randomUUID().toString();
-			Appointment appointment = new Appointment(id,dateTime,duration,owner,description );
-			DynamoDBMapper mapper=DynamoDBUtil.getMapper(null);
+			Appointment appointment = new Appointment(dateTime,duration,owner,description );
+			DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);
 			mapper.save(appointment);
 			return Response.
 					status(201).
-					entity(id+"/"+dateTime+" ("+owner+","+description+") saved sucessfully").
+					entity(dateTime+" ("+owner+","+description+") saved sucessfully").
 					build();
 		} catch (Exception e) {
 		return Response.
@@ -40,10 +48,26 @@ public class AppointResources {
 	
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response dummyGet()
+	@Path("/{id}")
+	public Appointment getOneAppointment(@PathParam("id") String id)
 	{
-	return Response.status(200).entity("Congratulations! Jersey is working!").build();
+		DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);
+		Appointment app = mapper.load(Appointment.class,id);
+		if(app!=null) {
+			return app;
+		}
+		throw new AppointmentNotFoundException(id);
+		
 	} //end method
 	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Appointment> getAllAppointments()
+	{
+	DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);	
+	DynamoDBScanExpression scanExpression=new DynamoDBScanExpression();
+	List<Appointment> result= mapper.scan(Appointment.class, scanExpression);
+	return result;
+	} //end method
 	
 }
