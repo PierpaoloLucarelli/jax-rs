@@ -45,5 +45,9 @@ $(document).ready(function(){
 			console.log(data);
 		});
 	});
+	
+	$('body').on('click', 'li.appointment', function() {
+		console.log("click");
+	});
 });
 
