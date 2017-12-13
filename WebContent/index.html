@@ -2,45 +2,40 @@
 <html>
 	<head>
 		<title>Submit New Appointment</title>
+		<link rel="stylesheet" href="styles/main.css">
 	</head>
 	<body>
-		<header>
-			<h1>Submit a New Appointment</h1>
-		</header>
-		<section>
-			<form method="post" action="api/appointment">
-				<table>
-					<tr>
-						<td>date Time</td>
-						<td>
-							<input type="text" name="dateTime">
-						</td>
-					</tr>
-					<tr>
-						<td>duration</td>
-						<td>
-							<input type="text" name="duration" min="1" max="200">
-						</td>
-					</tr>
-					<tr>
-						<td>owner:</td>
-						<td>
-							<input name="owner" type="text">
-						</td>
-					</tr>
-					<tr>
-						<td>description:</td>
-						<td>
-							<input name="description" type="text">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<button type="submit">Submit Appointment</button>
-						</td>
-					</tr>
-				</table>
-			</form>
-		</section>
+		<div class="container">
+			<header>
+				<h1>Diary App</h1>
+			</header>
+				<div class="inner">
+					<form id="mainform" method="GET" action="api/appointment">
+						<label>User:</label>
+						<input id="user" type="text" name="user"><br>
+						<label>From:</label>
+						<input id="from" type="date" name="fromDate"><br>
+						<label>To:</label>
+						<input id="to" type="date" name="toDate"><br>
+						<button type="submit">Show Appointments</button>
+					</form>
+					<p>or</p>
+					<button>Add an Appointment</button>
+					<form id="newAppForm" action="api/appointment" method="post">
+						<label>Owner</label>
+						<input id="new_owner" type="text" name="owner"><br>
+						<label>Start Time:</label>
+						<input id="new_dateTime" type="date" name="dateTime"><br>
+						<label>Duration:</label>
+						<input id="new_duration" type="number" name="duration"><br>
+						<label>Description</label>
+						<input id="new_desc" type="text" name="description"><br>
+						<input type="submit" id="addNewButton">
+					</form>
+				</div>
+		</div>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="script/app.js"></script>
 	</body>
 </html>

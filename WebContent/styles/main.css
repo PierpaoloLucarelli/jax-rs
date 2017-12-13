@@ -1,0 +1,39 @@
+body{
+	background: #eee;
+	width: 100%;
+}
+
+.container{
+	margin: 0 auto;
+	max-width: 80%;
+	text-align: center;
+}
+
+.inner{
+	width: 500px;
+	margin: 0 auto;
+}
+
+form{
+	margin: 0 auto;
+	display: block;
+	text-align: left;
+}
+
+form input, button{
+	width: 100%;
+	padding: 10px;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	outline: none;
+	border: none;
+	box-sizing : border-box;
+}
+
+button{
+	margin-top: 20px;
+}
+
+button:hover{
+	cursor: pointer;
+}
