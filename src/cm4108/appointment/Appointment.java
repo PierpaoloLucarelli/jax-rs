@@ -8,23 +8,24 @@ import cm4108.Config;
 
 @DynamoDBTable(tableName=Config.DYNAMODB_TABLE_NAME)
 public class Appointment{
-	public String id;
+	private String id;
 	
-	public String dateTime;
+	private String appUser;
 	
-	public String duration;
+	private long appDateTime;
 	
-	public String owner;
+	private String duration;
 	
-	public String description;
+	
+	private String description;
 	
 	// default constructor
 	public Appointment() {}
 	
-	public Appointment(String date, String duration, String owner, String desc) {
+	public Appointment(long date, String duration, String appUser, String desc) {
 		this.setDateTime(date);
 		this.setDuration(duration);
-		this.setOwner(owner);
+		this.setAppUser(appUser);
 		this.setDescription(desc);
 	}
 
@@ -38,13 +39,21 @@ public class Appointment{
 		this.id = id;
 	}
 
-	@DynamoDBAttribute(attributeName="dateTime")
-	public String getDateTime() {
-		return dateTime;
+	@DynamoDBAttribute(attributeName="appDateTime")
+	public long getDateTime() {
+		return appDateTime;
+	}
+	@DynamoDBAttribute(attributeName="appUser")
+	public String getAppUser() {
+		return appUser;
 	}
 
-	public void setDateTime(String dateTime) {
-		this.dateTime = dateTime;
+	public void setAppUser(String user) {
+		this.appUser = user;
+	}
+
+	public void setDateTime(long dateTime) {
+		this.appDateTime = dateTime;
 	}
 
 	@DynamoDBAttribute(attributeName="duration")
@@ -54,15 +63,6 @@ public class Appointment{
 
 	public void setDuration(String duration) {
 		this.duration = duration;
-	}
-
-	@DynamoDBAttribute(attributeName="owner")
-	public String getOwner() {
-		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
 	}
 
 	@DynamoDBAttribute(attributeName="description")
