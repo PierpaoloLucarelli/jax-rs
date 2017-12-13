@@ -29,11 +29,13 @@ $(document).ready(function(){
 	$("#addNewButton").click(function(e){
 		e.preventDefault();
 		var appUser = $("#new_owner").val();
-		var startdate = $("#new_dateTime").val();
+		var startdate = $("#new_date").val();
+		var startTime = $("#new_time").val();
 		var duration = $("#new_duration").val();
 		var description = $("#new_desc").val();
-		var dateTime = new Date(startdate).getTime() / 1000;
-		
+		var $date = new Date(startdate);
+		var finalDate = new Date($date.getFullYear(), $date.getMonth(), $date.getDay(), startTime.split(":")[0], startTime.split(":")[1], 0,0 );
+		var dateTime = finalDate.getTime() / 1000;
 		console.log(appUser + " " + dateTime + " " + duration + " " + description );
 		
 		$.post("api/appointment", {
@@ -50,7 +52,12 @@ $(document).ready(function(){
 		var $form = $("<form>", {id: "editApp"});
 		$form.append("<h1>Edit an appointment</h1>");
 		$form.append("<label>Description</label>");
-		$form.append( "<input type='text' value='" + $(this).find(".user").html() ) + "'>";
+		$form.append("<input name='description' type='text' value='"+$(this).find(".user").html()+"'>");
+		$form.append("<label>Date</label>");
+		$form.append("<input name='appDate' type='date' value='"+$(this).find(".user").html()+"'>");
+		$form.append("<label>Date</label>");
+		$form.append("<input name='appDate' type='date' value='"+$(this).find(".user").html()+"'>");
+		$form.append("<p>hi</p>");
 		$('body').append($form);
 	});
 });
