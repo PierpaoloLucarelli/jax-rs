@@ -47,7 +47,11 @@ $(document).ready(function(){
 	});
 	
 	$('body').on('click', 'li.appointment', function() {
-		console.log("click");
+		var $form = $("<form>", {id: "editApp"});
+		$form.append("<h1>Edit an appointment</h1>");
+		$form.append("<label>Description</label>");
+		$form.append( "<input type='text' value='" + $(this).find(".user").html() ) + "'>";
+		$('body').append($form);
 	});
 });
 
