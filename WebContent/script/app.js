@@ -15,6 +15,14 @@ $(document).ready(function(){
 		console.log(url);
 		$.get( url, function( data ) {
 			console.log(data);
+			for(var i = 0 ; i < data.length ; i++){
+				$("#results").append("<li appNumber='" + data[i].id + "' class='appointment'>" +
+						"<p class='user'>" + data[i].appUser + "</p>" + 
+						"<p class='date'>" + data[i].dateTime + "</p>" +
+						"<p class='duration'>" + data[i].duration + "</p>" + 
+						"<p class='description'>" + data[i].description + "</p>" + 
+						"</li>");
+			}
 		});
 	});
 	

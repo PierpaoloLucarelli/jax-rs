@@ -37,3 +37,21 @@ button{
 button:hover{
 	cursor: pointer;
 }
+
+.appointment{
+	background: #fff;
+	border-radius: 5px;
+	padding: 10px;
+	margin-bottom: 10px;
+	
+}
+
+.appointment p{
+	display: inline;
+}
+
+#results{
+	list-style: none;
+	padding: 0;
+	width: 100%;
+}
