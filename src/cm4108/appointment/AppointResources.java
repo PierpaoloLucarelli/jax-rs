@@ -1,9 +1,6 @@
 package cm4108.appointment;
 
 import java.util.Collection;
-import java.util.Date;
-import java.util.UUID;
-import java.text.SimpleDateFormat;
 //general Java
 import java.util.*;
 //JAX-RS
@@ -11,7 +8,6 @@ import java.util.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-import com.amazonaws.regions.Regions;
 //AWS SDK
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
@@ -76,7 +72,7 @@ public class AppointResources {
 			old.setDescription(description);
 			old.setDuration(duration);
 			mapper.save(old);
-			return Response.status(204).entity("204 resource updated successfully").build();
+			return Response.status(201).entity("201 resource updated successfully").build();
 			} catch (Exception e) {
 				return Response.status(404).entity("bad request").build();
 			}
@@ -114,14 +110,12 @@ public class AppointResources {
 	{
 	DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);
 	Appointment app =mapper.load(Appointment.class,id);
-
 	if (app==null)
 		throw new WebApplicationException(404);
-
 	return app;
 	} //end method
 	
-	
+	// list all appointment
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Appointment> getAllAppointments()
