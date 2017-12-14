@@ -32,6 +32,15 @@ form input, button, .popup input{
 	box-sizing : border-box;
 }
 
+#warning, #newAppWarning{
+	color: #e74c3c;
+	display: none;
+}
+
+input.warning{
+	border: 1px solid #e74c3c;
+}
+
 button{
 	margin-top: 20px;
 }
@@ -65,6 +74,11 @@ button:hover{
 
 #newAppForm{
 	display:none;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin-top: 30px;
+	background: #f5f5f5;
 }
 
 .overlay{
@@ -75,6 +89,11 @@ button:hover{
 	right: 0;
 	background: rgba(0,0,0,0.7);
 	display: none;
+}
+
+#addNewButton:hover{
+	background: #e74c3c;
+	color: #fff;
 }
 
 .popup {

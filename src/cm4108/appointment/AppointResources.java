@@ -37,7 +37,7 @@ public class AppointResources {
 			mapper.save(appointment);
 			return Response.
 					status(201).
-					entity(dateTime+" ("+appUser+","+description+") saved sucessfully").
+					entity("Hey "+appUser+", "+description+" saved sucessfully").
 					build();
 		} catch (Exception e) {
 		return Response.
@@ -90,7 +90,8 @@ public class AppointResources {
 											@QueryParam("toDate") String toDate) {
 		List<Appointment> result = null;
 		DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);
-		if (fromDate!=null && toDate!=null) {
+		System.out.println(fromDate);
+		if (fromDate!=null && toDate!=null && appUser!=null) {
 			Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
 			eav.put(":val1", new AttributeValue().withS((String)appUser));
 			eav.put(":val2", new AttributeValue().withN(fromDate));

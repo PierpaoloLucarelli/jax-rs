@@ -7,8 +7,8 @@ $(document).ready(function(){
 	
 	$("#mainform").submit(function(e){
 		e.preventDefault();
-		console.log("submitting");
 		var owner = $("#user").val();
+		$("#warning").hide();
 		var from = $("#from").val();
 		var to = $("#to").val();
 		var fromDate = new Date(from).getTime() / 1000;
@@ -16,20 +16,28 @@ $(document).ready(function(){
 		var url = "api/appointment/user/" + owner;
 		var params = "?fromDate=" + fromDate + "&toDate=" + toDate;
 		url += params;
-		console.log(url);
-		$.get( url, function( data ) {
-			console.log(data);
-			for(var i = 0 ; i < data.length ; i++){
-				var appDate = new Date(data[i].dateTime*1000);
-				$("#results").append("<li appNumber='" + data[i].id + "' class='appointment clearfix'>" +
-						"<p class='date'>" + appDate.getDate() + " " + monthNames[appDate.getMonth()] + " " + appDate.getFullYear() + "</p>" +
-						"<p class='time'>" + appDate.getHours() + ":" + appDate.getMinutes() + "</p>" + 
-						"<p class='user'><span>by: </span>" + data[i].appUser + "</p>" +  
-						"<p class='description'>" + data[i].description + "</p>" +
-						"<div class='brake'></div>" + 
-					"</li>");
-			}
-		});
+		if(owner != '' && from != '' && to!=''){
+			$.get( url, function( data ) {
+				$("#results").empty();
+				console.log(data);
+				if(data.length == 0){
+					$("#results").append("<p>No results found</p>");
+				}
+				for(var i = 0 ; i < data.length ; i++){
+					var appDate = new Date(data[i].dateTime*1000);
+					$("#results").append("<li appNumber='" + data[i].id + "' class='appointment clearfix'>" +
+							"<p class='date'>" + appDate.getDate() + " " + monthNames[appDate.getMonth()] + " " + appDate.getFullYear() + "</p>" +
+							"<p class='time'>" + appDate.getHours() + ":" + appDate.getMinutes() + "</p>" + 
+							"<p class='user'><span>by: </span>" + data[i].appUser + "</p>" +  
+							"<p class='description'>" + data[i].description + "</p>" +
+							"<div class='brake'></div>" + 
+						"</li>");
+				}
+			});
+		} else{
+			$("#warning").html("Please insert a username start date and end date");
+			$("#warning").show();
+		}
 	});
 	
 	$("#addNewButton").click(function(e){
@@ -43,19 +51,27 @@ $(document).ready(function(){
 		var finalDate = new Date($date.getFullYear(), $date.getMonth(), $date.getDate(), startTime.split(":")[0], startTime.split(":")[1], 0,0 );
 		var dateTime = finalDate.getTime() / 1000;
 		console.log(appUser + " " + dateTime + " " + duration + " " + description );
-		
-		$.post("api/appointment", {
-			dateTime: dateTime,
-			duration: duration,
-			appUser: appUser,
-			description: description
-		}).done(function(data){
-			console.log(data);
-		});
+		if(appUser != "" && startdate != "" && startTime != "" && duration != "" && description != ""){
+			$("#newAppWarning").hide();
+			$.post("api/appointment", {
+				dateTime: dateTime,
+				duration: duration,
+				appUser: appUser,
+				description: description
+			}).done(function(data){
+				alert(data);
+				$("#newAppForm").hide();
+			}).fail(function(response) {
+				$("#newAppWarning").html("Something went wrong, Please insert all the fields");
+			    $("#newAppWarning").show();
+			});
+		} else{
+			$("#newAppWarning").html("Something went wrong, Please insert all the fields");
+		    $("#newAppWarning").show();
+		}
 	});
 	
 	$('body').on('click', 'li.appointment', function() {
-		$(".overlay").show();
 		var $form = $("<form>", {id: "editApp"});
 		var id = $(this).attr("appnumber");
 		var url = "api/appointment/" + id;
@@ -70,12 +86,11 @@ $(document).ready(function(){
 			if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} 
 			var dateString = yyyy+'-'+mm+'-'+dd;
 			console.log(dateString);
-//			$("#edit_date").datepicker({dateFormat: 'yy-mm-dd'});
-//			$("#edit_date").datepicker('setDate', new Date(dateString));
 			document.getElementById("edit_date").value = dateString;
 			$("#edit_desc").val(data.description);
 			$('#edit_time').val(date.getHours() + ":" + (date.getMinutes()<10?'0':'') + date.getMinutes());
 			$("#edit_duration").val(data.duration);
+			$(".overlay").show();
 		});
 	});
 	
@@ -86,6 +101,8 @@ $(document).ready(function(){
 		    type: 'DELETE',
 		    success: function(result) {
 		        console.log(result);
+		        alert("Deleted Appointment");
+		        $(".overlay").hide();
 		    }
 		});
 	});
@@ -110,14 +127,26 @@ $(document).ready(function(){
 		    		description: description
 		    },
 		    success: function(result) {
-		        console.log(result);
+		        alert('Appointment modified sucessfully');
+		        $(".overlay").hide();
 		    }
 		});
 	});
 	
+	
+	$(".overlay").click(function(e){
+		if (e.target !== this)
+		    return;
+		$(this).hide();
+	});
+	
+	$("#cancel_edit").click(function(){
+		$(".overlay").hide();
+	});
+	
+	
 	$("#new-form-show").click(function(){
-		
-		$("#newAppForm").toggle();
+		$("#newAppForm").show();
 	});
 	
 });
