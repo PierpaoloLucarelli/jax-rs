@@ -19,8 +19,7 @@ $(document).ready(function(){
 				var appDate = new Date(data[i].dateTime*1000);
 				$("#results").append("<li appNumber='" + data[i].id + "' class='appointment'>" +
 						"<p class='date'>" + appDate +"</p>" +
-						"<p class='user'>" + data[i].appUser + "</p>" + 
-						"<p class='duration'>" + data[i].duration + "</p>" + 
+						"<p class='user'>" + data[i].appUser + "</p>" +  
 						"<p class='description'>" + data[i].description + "</p>" + 
 						"</li>");
 			}
@@ -51,17 +50,25 @@ $(document).ready(function(){
 	
 	$('body').on('click', 'li.appointment', function() {
 		var $form = $("<form>", {id: "editApp"});
-		var date = new Date($(this).find(".date").html());
-		var dd = date.getDate();
-		var mm = date.getMonth()+1;
-		var yyyy = date.getFullYear();
-		if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} var dateString = mm+'-'+dd+'-'+yyyy;
-		$(".popup").find("#edit_desc").val($(this).find(".description").html());
-		$("#edit_date").datepicker({dateFormat: 'yy-mm-dd'});
-	    $("#edit_date").datepicker('setDate', new Date(dateString));
-	    $('#edit_time').val(date.getHours() + ":" + (date.getMinutes()<10?'0':'') + date.getMinutes());
-	    $("#edit_duration").val($(this).find(".duration").html());
-	    $(".popup").attr("appnumber", $(this).attr("appnumber"));
+		var id = $(this).attr("appnumber");
+		var url = "api/appointment/" + id;
+		$('.popup').attr("appnumber", id);
+		$.get( url, function( data ) {
+			console.log(data);
+			var date = new Date(data.dateTime*1000);
+			console.log(date.getFullYear);
+			var dd = date.getDate();
+			var mm = date.getMonth()+1;
+			var yyyy = date.getFullYear();
+			if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} 
+			var dateString = yyyy+'-'+mm+'-'+dd;
+			console.log(dateString);
+			$("#edit_date").datepicker({dateFormat: 'yy-mm-dd'});
+			$("#edit_date").datepicker('setDate', new Date(dateString));
+			$("#edit_desc").val(data.description);
+			$('#edit_time').val(date.getHours() + ":" + (date.getMinutes()<10?'0':'') + date.getMinutes());
+			$("#edit_duration").val(data.duration);
+		});
 	});
 	
 	$("#delete_edit").click(function(){
@@ -82,7 +89,8 @@ $(document).ready(function(){
 		var description = $("#edit_desc").val();
 		var duration =  $("#edit_duration").val();
 		var $date = new Date(startdate);
-		var finalDate = new Date($date.getFullYear(), $date.getMonth(), $date.getDay(), startTime.split(":")[0], startTime.split(":")[1], 0,0 );
+		console.log($date.getDate());
+		var finalDate = new Date($date.getFullYear(), $date.getMonth(), $date.getDate(), startTime.split(":")[0], startTime.split(":")[1], 0,0 );
 		var dateTime = finalDate.getTime() / 1000;
 		$.ajax({
 		    url: 'api/appointment/'+id,

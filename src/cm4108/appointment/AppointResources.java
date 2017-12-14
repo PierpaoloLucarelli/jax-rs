@@ -32,8 +32,6 @@ public class AppointResources {
 			@FormParam("description") String description
 			) {
 		try {
-			System.out.println("dateis");
-			System.out.println(dateTime);
 			Appointment appointment = new Appointment(dateTime,duration,appUser,description);
 			DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);
 			mapper.save(appointment);
@@ -48,20 +46,6 @@ public class AppointResources {
 				build();		//if the client did something wrong
 		}
 	}
-	
-	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	@Path("/{id}")
-	public Appointment getOneAppointment(@PathParam("id") String id)
-	{
-		DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);
-		Appointment app = mapper.load(Appointment.class,id);
-		if(app!=null) {
-			return app;
-		}
-		throw new AppointmentNotFoundException(id);
-		
-	} //end method
 	
 	@Path("/{id}")
 	@DELETE
@@ -84,8 +68,8 @@ public class AppointResources {
 			@FormParam("duration") int duration,
 		    @FormParam("description") String description
 		    ) {
-		System.out.println("putting");
 		try {
+			System.out.println(id + " " + dateTime + " " + duration + " " + description);
 			DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);	
 			Appointment old = mapper.load(Appointment.class,id);
 			old.setDateTime(dateTime);
@@ -106,9 +90,6 @@ public class AppointResources {
 											@QueryParam("toDate") String toDate) {
 		List<Appointment> result = null;
 		DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);
-		System.out.println(fromDate);
-		System.out.println(toDate);
-		System.out.println(appUser);
 		if (fromDate!=null && toDate!=null) {
 			Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
 			eav.put(":val1", new AttributeValue().withS((String)appUser));
@@ -124,6 +105,20 @@ public class AppointResources {
 		}
 		return result;
 	}
+	
+	@Path("/{id}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Appointment getAppointmentByID(@PathParam("id") String id)
+	{
+	DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);
+	Appointment app =mapper.load(Appointment.class,id);
+
+	if (app==null)
+		throw new WebApplicationException(404);
+
+	return app;
+	} //end method
 	
 	
 	@GET
