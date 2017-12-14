@@ -34,7 +34,7 @@ $(document).ready(function(){
 		var duration = $("#new_duration").val();
 		var description = $("#new_desc").val();
 		var $date = new Date(startdate);
-		var finalDate = new Date($date.getFullYear(), $date.getMonth(), $date.getDay(), startTime.split(":")[0], startTime.split(":")[1], 0,0 );
+		var finalDate = new Date($date.getFullYear(), $date.getMonth(), $date.getDate(), startTime.split(":")[0], startTime.split(":")[1], 0,0 );
 		var dateTime = finalDate.getTime() / 1000;
 		console.log(appUser + " " + dateTime + " " + duration + " " + description );
 		
