@@ -1,3 +1,7 @@
+var monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
 $(document).ready(function(){
 	console.log("hi");
 	
@@ -17,11 +21,13 @@ $(document).ready(function(){
 			console.log(data);
 			for(var i = 0 ; i < data.length ; i++){
 				var appDate = new Date(data[i].dateTime*1000);
-				$("#results").append("<li appNumber='" + data[i].id + "' class='appointment'>" +
-						"<p class='date'>" + appDate +"</p>" +
-						"<p class='user'>" + data[i].appUser + "</p>" +  
-						"<p class='description'>" + data[i].description + "</p>" + 
-						"</li>");
+				$("#results").append("<li appNumber='" + data[i].id + "' class='appointment clearfix'>" +
+						"<p class='date'>" + appDate.getDate() + " " + monthNames[appDate.getMonth()] + " " + appDate.getFullYear() + "</p>" +
+						"<p class='time'>" + appDate.getHours() + ":" + appDate.getMinutes() + "</p>" + 
+						"<p class='user'><span>by: </span>" + data[i].appUser + "</p>" +  
+						"<p class='description'>" + data[i].description + "</p>" +
+						"<div class='brake'></div>" + 
+					"</li>");
 			}
 		});
 	});
@@ -49,6 +55,7 @@ $(document).ready(function(){
 	});
 	
 	$('body').on('click', 'li.appointment', function() {
+		$(".overlay").show();
 		var $form = $("<form>", {id: "editApp"});
 		var id = $(this).attr("appnumber");
 		var url = "api/appointment/" + id;
@@ -63,8 +70,9 @@ $(document).ready(function(){
 			if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} 
 			var dateString = yyyy+'-'+mm+'-'+dd;
 			console.log(dateString);
-			$("#edit_date").datepicker({dateFormat: 'yy-mm-dd'});
-			$("#edit_date").datepicker('setDate', new Date(dateString));
+//			$("#edit_date").datepicker({dateFormat: 'yy-mm-dd'});
+//			$("#edit_date").datepicker('setDate', new Date(dateString));
+			document.getElementById("edit_date").value = dateString;
 			$("#edit_desc").val(data.description);
 			$('#edit_time').val(date.getHours() + ":" + (date.getMinutes()<10?'0':'') + date.getMinutes());
 			$("#edit_duration").val(data.duration);
@@ -105,6 +113,11 @@ $(document).ready(function(){
 		        console.log(result);
 		    }
 		});
+	});
+	
+	$("#new-form-show").click(function(){
+		
+		$("#newAppForm").toggle();
 	});
 	
 });

@@ -1,6 +1,8 @@
 body{
 	background: #eee;
 	width: 100%;
+	font-family: 'Roboto', sans-serif;
+	color: #444;
 }
 
 .container{
@@ -20,7 +22,7 @@ form{
 	text-align: left;
 }
 
-form input, button{
+form input, button, .popup input{
 	width: 100%;
 	padding: 10px;
 	border-radius: 5px;
@@ -43,7 +45,12 @@ button:hover{
 	border-radius: 5px;
 	padding: 10px;
 	margin-bottom: 10px;
-	
+	font-size: 0.8em;
+}
+
+.appointment:hover{
+	cursor: pointer;
+	background: rgba(255,255,255,0.7);
 }
 
 .appointment p{
@@ -54,4 +61,72 @@ button:hover{
 	list-style: none;
 	padding: 0;
 	width: 100%;
+}
+
+#newAppForm{
+	display:none;
+}
+
+.overlay{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0,0,0,0.7);
+	display: none;
+}
+
+.popup {
+	width: 500px;
+	text-align: left;
+	margin: 0 auto;
+	position: absolute;
+	top: 200px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 999;
+}
+
+.popup label{
+	color: #fff;
+	margin-bottom: 10px;
+	display: block;
+}
+
+.popup button{
+	width: 32.7%;
+}
+
+.popup button:hover{
+	background: #e74c3c;
+	color: #fff;
+}
+
+#results .date{
+	float: left;
+}
+
+#results .time{
+	float: left;
+	margin-left: 20px;
+}
+#results .user{
+	float: right;
+	color: #e74c3c;
+}
+
+#results .user span{
+	color: #000;
+	margin-left: 10px;
+}
+#results .description{
+	float: right;
+}
+
+.clearfix::after { 
+   content: " ";
+   display: block; 
+   height: 0; 
+   clear: both;
 }

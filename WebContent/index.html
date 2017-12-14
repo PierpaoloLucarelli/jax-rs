@@ -3,6 +3,7 @@
 	<head>
 		<title>Submit New Appointment</title>
 		<link rel="stylesheet" href="styles/main.css">
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	</head>
 	<body>
 		<div class="container">
@@ -24,7 +25,7 @@
 						</ul>
 					</div>
 					<p>or</p>
-					<button>Add an Appointment</button>
+					<button id="new-form-show">Add an Appointment</button>
 					<form id="newAppForm" action="api/appointment" method="post">
 						<label>Owner</label>
 						<input id="new_owner" type="text" name="owner"><br>
@@ -39,18 +40,20 @@
 						<input type="submit" id="addNewButton">
 					</form>
 				</div>
-				<div class="popup">
-					<label>Description</label>
-					<input type="text" id="edit_desc" name="description"><br>
-					<label>Date</label>
-					<input type="date" id="edit_date" name="dateTime"><br>
-					<label>Time</label>
-					<input type="time" id="edit_time" name="time"><br>
-					<label>Duration</label>
-					<input type="number" id="edit_duration" name="duration">(Minutes)<br>
-					<button id="save_edit">Save</button>
-					<button id="cancel_edit">Cancel</button>
-					<button id="delete_edit">Delete</button>
+				<div class="overlay">
+					<div class="popup">
+						<label>Description</label>
+						<input type="text" id="edit_desc" name="description"><br>
+						<label>Date</label>
+						<input type="date" id="edit_date" name="dateTime"><br>
+						<label>Time</label>
+						<input type="time" id="edit_time" name="time"><br>
+						<label>Duration</label>
+						<input type="number" id="edit_duration" name="duration" placeholder="minutes"><br>
+						<button id="save_edit">Save</button>
+						<button id="cancel_edit">Cancel</button>
+						<button id="delete_edit">Delete</button>
+					</div>
 				</div>
 		</div>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
