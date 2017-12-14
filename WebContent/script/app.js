@@ -16,9 +16,10 @@ $(document).ready(function(){
 		$.get( url, function( data ) {
 			console.log(data);
 			for(var i = 0 ; i < data.length ; i++){
+				var appDate = new Date(data[i].dateTime*1000);
 				$("#results").append("<li appNumber='" + data[i].id + "' class='appointment'>" +
+						"<p class='date'>" + appDate +"</p>" +
 						"<p class='user'>" + data[i].appUser + "</p>" + 
-						"<p class='date'>" + data[i].dateTime + "</p>" +
 						"<p class='duration'>" + data[i].duration + "</p>" + 
 						"<p class='description'>" + data[i].description + "</p>" + 
 						"</li>");
@@ -50,15 +51,53 @@ $(document).ready(function(){
 	
 	$('body').on('click', 'li.appointment', function() {
 		var $form = $("<form>", {id: "editApp"});
-		$form.append("<h1>Edit an appointment</h1>");
-		$form.append("<label>Description</label>");
-		$form.append("<input name='description' type='text' value='"+$(this).find(".user").html()+"'>");
-		$form.append("<label>Date</label>");
-		$form.append("<input name='appDate' type='date' value='"+$(this).find(".user").html()+"'>");
-		$form.append("<label>Date</label>");
-		$form.append("<input name='appDate' type='date' value='"+$(this).find(".user").html()+"'>");
-		$form.append("<p>hi</p>");
-		$('body').append($form);
+		var date = new Date($(this).find(".date").html());
+		var dd = date.getDate();
+		var mm = date.getMonth()+1;
+		var yyyy = date.getFullYear();
+		if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} var dateString = mm+'-'+dd+'-'+yyyy;
+		$(".popup").find("#edit_desc").val($(this).find(".description").html());
+		$("#edit_date").datepicker({dateFormat: 'yy-mm-dd'});
+	    $("#edit_date").datepicker('setDate', new Date(dateString));
+	    $('#edit_time').val(date.getHours() + ":" + (date.getMinutes()<10?'0':'') + date.getMinutes());
+	    $("#edit_duration").val($(this).find(".duration").html());
+	    $(".popup").attr("appnumber", $(this).attr("appnumber"));
 	});
+	
+	$("#delete_edit").click(function(){
+		var id = $(".popup").attr("appnumber");
+		$.ajax({
+		    url: 'api/appointment/'+id,
+		    type: 'DELETE',
+		    success: function(result) {
+		        console.log(result);
+		    }
+		});
+	});
+	
+	$("#save_edit").click(function(){
+		var id = $(".popup").attr("appnumber");
+		var startdate = $("#edit_date").val();
+		var startTime = $("#edit_time").val();
+		var description = $("#edit_desc").val();
+		var duration =  $("#edit_duration").val();
+		var $date = new Date(startdate);
+		var finalDate = new Date($date.getFullYear(), $date.getMonth(), $date.getDay(), startTime.split(":")[0], startTime.split(":")[1], 0,0 );
+		var dateTime = finalDate.getTime() / 1000;
+		$.ajax({
+		    url: 'api/appointment/'+id,
+		    type: 'PUT',
+		    data: {
+		    		id: id,
+		    		dateTime: dateTime,
+		    		duration: duration,
+		    		description: description
+		    },
+		    success: function(result) {
+		        console.log(result);
+		    }
+		});
+	});
+	
 });
 

@@ -1,6 +1,5 @@
 package cm4108.appointment;
 
-import java.util.Date;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 
@@ -14,7 +13,7 @@ public class Appointment{
 	
 	private long appDateTime;
 	
-	private String duration;
+	private int duration;
 	
 	
 	private String description;
@@ -22,7 +21,7 @@ public class Appointment{
 	// default constructor
 	public Appointment() {}
 	
-	public Appointment(long date, String duration, String appUser, String desc) {
+	public Appointment(long date, int duration, String appUser, String desc) {
 		this.setDateTime(date);
 		this.setDuration(duration);
 		this.setAppUser(appUser);
@@ -57,11 +56,11 @@ public class Appointment{
 	}
 
 	@DynamoDBAttribute(attributeName="duration")
-	public String getDuration() {
+	public int getDuration() {
 		return duration;
 	}
 
-	public void setDuration(String duration) {
+	public void setDuration(int duration) {
 		this.duration = duration;
 	}
 

@@ -27,14 +27,14 @@ public class AppointResources {
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response addAppintment(
 			@FormParam("dateTime") long dateTime,
-			@FormParam("duration") String duration,
+			@FormParam("duration") int duration,
 			@FormParam("appUser") String appUser,
 			@FormParam("description") String description
 			) {
 		try {
 			System.out.println("dateis");
 			System.out.println(dateTime);
-			Appointment appointment = new Appointment(dateTime,duration,appUser,description );
+			Appointment appointment = new Appointment(dateTime,duration,appUser,description);
 			DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);
 			mapper.save(appointment);
 			return Response.
@@ -63,21 +63,40 @@ public class AppointResources {
 		
 	} //end method
 	
-//	@POST
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Collection getAppointmentByUser( @FormParam("owner") String owner,
-//								@FormParam("dateTime") String dateTime,
-//								@FormParam("duration") int duration,
-//								@FormParam("description") String description) {
-//		DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);
-//		Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-//		eav.put(":owner", new AttributeValue().withS(owner));
-//		DynamoDBScanExpression scanExp = new DynamoDBScanExpression()
-//				.withFilterExpression("owner = :owner")
-//				.withExpressionAttributeValues(eav);
-//		List<Appointment> result = mapper.scan(Appointment.class, scanExp);
-//		return result;
-//	}
+	@Path("/{id}")
+	@DELETE
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response deleteAppointment(@PathParam("id") String id) {
+		DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);
+		Appointment appointment = mapper.load(Appointment.class,id);
+		if (appointment == null)
+			throw new WebApplicationException(404);
+		mapper.delete(appointment);
+		return Response.status(204).entity("Appointment deleted successfully").build();
+	}
+	
+	@Path("/{id}")
+	@PUT
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response updateAppointment(
+			@PathParam("id") String id,
+			@FormParam("dateTime") long dateTime,
+			@FormParam("duration") int duration,
+		    @FormParam("description") String description
+		    ) {
+		System.out.println("putting");
+		try {
+			DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);	
+			Appointment old = mapper.load(Appointment.class,id);
+			old.setDateTime(dateTime);
+			old.setDescription(description);
+			old.setDuration(duration);
+			mapper.save(old);
+			return Response.status(204).entity("204 resource updated successfully").build();
+			} catch (Exception e) {
+				return Response.status(404).entity("bad request").build();
+			}
+	}
 	
 	@Path("/user/{owner}")
 	@GET
