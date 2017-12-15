@@ -19,6 +19,7 @@ import cm4108.exceptions.AppointmentNotFoundException;
 @Path("/appointment")
 public class AppointResources {
 
+	// create a new appointment
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response addAppintment(
@@ -43,6 +44,7 @@ public class AppointResources {
 		}
 	}
 	
+	// delete an appointment by its id
 	@Path("/{id}")
 	@DELETE
 	@Produces(MediaType.TEXT_PLAIN)
@@ -55,6 +57,7 @@ public class AppointResources {
 		return Response.status(204).entity("Appointment deleted successfully").build();
 	}
 	
+	// update an appointment by its id
 	@Path("/{id}")
 	@PUT
 	@Produces(MediaType.TEXT_PLAIN)
@@ -78,6 +81,7 @@ public class AppointResources {
 			}
 	}
 	
+	// get an appointment by owner name and within a specified range
 	@Path("/user/{owner}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -103,6 +107,7 @@ public class AppointResources {
 		return result;
 	}
 	
+	// get an appointment by its id. If not found throw AppNotFoundException
 	@Path("/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -113,9 +118,9 @@ public class AppointResources {
 	if (app!=null)
 		return app;
 	throw new AppointmentNotFoundException(id);
-	} //end method
+	}
 	
-	// list all appointment
+	// list all appointmen. if no results are found return empty list
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Appointment> getAllAppointments()
