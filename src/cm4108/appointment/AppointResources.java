@@ -110,9 +110,9 @@ public class AppointResources {
 	{
 	DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);
 	Appointment app =mapper.load(Appointment.class,id);
-	if (app==null)
-		throw new WebApplicationException(404);
-	return app;
+	if (app!=null)
+		return app;
+	throw new AppointmentNotFoundException(id);
 	} //end method
 	
 	// list all appointment
