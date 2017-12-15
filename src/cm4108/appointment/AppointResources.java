@@ -54,7 +54,7 @@ public class AppointResources {
 		if (appointment == null)
 			throw new WebApplicationException(404);
 		mapper.delete(appointment);
-		return Response.status(204).entity("Appointment deleted successfully").build();
+		return Response.status(202).entity("Appointment deleted successfully").build();
 	}
 	
 	// update an appointment by its id
@@ -71,13 +71,17 @@ public class AppointResources {
 			System.out.println(id + " " + dateTime + " " + duration + " " + description);
 			DynamoDBMapper mapper=DynamoDBUtil.getMapper(Config.AWS_REGION);	
 			Appointment old = mapper.load(Appointment.class,id);
-			old.setDateTime(dateTime);
-			old.setDescription(description);
-			old.setDuration(duration);
-			mapper.save(old);
-			return Response.status(201).entity("201 resource updated successfully").build();
+			if(old != null) {
+				old.setDateTime(dateTime);
+				old.setDescription(description);
+				old.setDuration(duration);
+				mapper.save(old);
+				return Response.status(204).entity("204 resource updated successfully").build();
+			} else {
+				return Response.status(404).entity("Appointment not found").build();
+			}
 			} catch (Exception e) {
-				return Response.status(404).entity("bad request").build();
+				return Response.status(400).entity("bad request").build();
 			}
 	}
 	

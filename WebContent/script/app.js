@@ -63,11 +63,11 @@ $(document).ready(function(){
 				alert(data);
 				$("#newAppForm").hide();
 			}).fail(function(response) {
-				$("#newAppWarning").html("Something went wrong, Please insert all the fields");
+				$("#newAppWarning").html("Something went wrong, Please insert all the fields or check the types");
 			    $("#newAppWarning").show();
 			});
 		} else{
-			$("#newAppWarning").html("Something went wrong, Please insert all the fields");
+			$("#newAppWarning").html("Something went wrong, Please insert all the fields or che the types");
 		    $("#newAppWarning").show();
 		}
 	});
