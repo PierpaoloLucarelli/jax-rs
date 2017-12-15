@@ -29,6 +29,7 @@ $(document).ready(function(){
 							"<p class='date'>" + appDate.getDate() + " " + monthNames[appDate.getMonth()] + " " + appDate.getFullYear() + "</p>" +
 							"<p class='time'>" + appDate.getHours() + ":" + appDate.getMinutes() + "</p>" + 
 							"<p class='user'><span>by: </span>" + data[i].appUser + "</p>" +  
+							"<p class='dur'> For "+data[i].duration+" minutes</p>" +
 							"<p class='description'>" + data[i].description + "</p>" +
 							"<div class='brake'></div>" + 
 						"</li>");

@@ -57,6 +57,11 @@ button:hover{
 	font-size: 0.8em;
 }
 
+.dur{
+	float: right;
+	margin-left: 10px;
+}
+
 .appointment:hover{
 	cursor: pointer;
 	background: rgba(255,255,255,0.7);
